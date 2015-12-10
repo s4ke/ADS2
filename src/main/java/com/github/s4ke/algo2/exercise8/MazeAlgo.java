@@ -126,11 +126,11 @@ public class MazeAlgo {
 				int curIndex = to( i, j, rowLength );
 				Set<Direction> open = maze[i][j];
 				if ( open.contains( E ) && exists( i, j + 1, rowLength, totalSize ) ) {
-					System.out.println( "merging: " + curIndex + " with " + to( i, j + 1, rowLength ) );
+					System.out.println( "merging " + to( i, j + 1, rowLength ) + " into " + curIndex );
 					uf.union( curIndex, to( i, j + 1, rowLength ) );
 				}
 				if ( open.contains( S ) && exists( i + 1, j, rowLength, totalSize ) ) {
-					System.out.println( "merging: " + curIndex + " with " + to( i + 1, j, rowLength ) );
+					System.out.println( "merging " + to( i + 1, j, rowLength ) + " into " + curIndex );
 					uf.union( curIndex, to( i + 1, j, rowLength ) );
 				}
 				System.out.println( uf );
