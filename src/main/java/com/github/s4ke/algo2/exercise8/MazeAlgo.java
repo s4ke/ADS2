@@ -29,19 +29,19 @@ public class MazeAlgo {
 		return new HashSet<>( Arrays.asList( dir ) );
 	}
 
-	private static Set[][] maze = {
+	private static Set[][] mazeWorks = {
 			{of( W, S ), of( E ), of( W, E, S ), of( W, S )},
 			{of( N, E, S ), of( W, S ), of( N ), of( N, S )},
 			{of( N, E, S ), of( W, N, E, S ), of( W, E, S ), of( W, N, S )},
 			{of( N, E ), of( W, N ), of( N, E ), of( W, N, E )}
 	};
 
-	/*private static Set[][] maze = {
+	private static Set[][] mazeBroken = {
 			{of( W, S ), of( E ), of( W, E, S ), of( W, S )},
 			{of( N, E, S ), of( W, S ), of( N ), of( N, S )},
 			{of( N, E, S ), of( W, N, E, S ), of( W, E, S ), of( W, N )},
 			{of( N, E ), of( W, N ), of( N ), of( E )}
-	};*/
+	};
 
 	public static void printMaze(Set[][] maze) {
 		for ( int i = 0; i < maze.length; ++i ) {
@@ -153,8 +153,11 @@ public class MazeAlgo {
 	}
 
 	public static void main(String[] args) {
-		printMaze( maze );
-		System.out.println( hasSolution( maze, 0, 15 ) );
+		printMaze( mazeBroken );
+		System.out.println( hasSolution( mazeBroken, 0, 15 ) );
+
+		printMaze( mazeWorks );
+		System.out.println( hasSolution( mazeWorks, 0, 15 ) );
 	}
 
 }
