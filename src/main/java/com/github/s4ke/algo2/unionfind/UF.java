@@ -1,9 +1,11 @@
 /**
- * from http://algs4.cs.princeton.edu/15uf/UF.java.html
+ * touched http://algs4.cs.princeton.edu/15uf/UF.java.html
  */
 package com.github.s4ke.algo2.unionfind;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The <tt>UF</tt> class represents a <em>union-find data type</em>
@@ -78,9 +80,9 @@ import java.util.Arrays;
 
 public class UF {
 
+	private Set<Integer>[] touched;
 	private int[] parent;  // parent[i] = parent of i
 	private int[] rank;   // rank[i] = rank of subtree rooted at i (never more than 31)
-	private int[] mergedWith;
 	private int count;     // number of components
 
 	/**
@@ -97,11 +99,11 @@ public class UF {
 			throw new IllegalArgumentException();
 		}
 		count = N;
+		touched = new HashSet[N];
 		parent = new int[N];
 		rank = new int[N];
-		mergedWith = new int[N];
 		for ( int i = 0; i < N; i++ ) {
-			mergedWith[i] = -1;
+			touched[i] = new HashSet<>();
 			parent[i] = i;
 			rank[i] = 0;
 		}
@@ -150,6 +152,10 @@ public class UF {
 		return find( p ) == find( q );
 	}
 
+	public Set<Integer> from(int p) {
+		return this.touched[p];
+	}
+
 	/**
 	 * Merges the component containing site <tt>p</tt> with the
 	 * the component containing site <tt>q</tt>.
@@ -161,9 +167,13 @@ public class UF {
 	 * both <tt>0 &le; p &lt; N</tt> and <tt>0 &le; q &lt; N</tt>
 	 */
 	public void union(int p, int q) {
-		this.mergedWith[q] = p;
 		int rootP = find( p );
 		int rootQ = find( q );
+		touched[p].add(q);
+		touched[q].add(p);
+		if( touched[q].size() > 4 || touched[p].size() > 4) {
+			throw new AssertionError();
+		}
 		if ( rootP == rootQ ) {
 			return;
 		}
@@ -192,8 +202,8 @@ public class UF {
 
 	@Override
 	public String toString() {
-		return "parents: " + Arrays.toString( this.parent ) + "\nranks: " + Arrays.toString( this.rank ) + "\nmergedWith: " + Arrays
-				.toString( this.mergedWith ) + "\ncount: " + this.count;
+		return "parents: " + Arrays.toString( this.parent ) + "\nranks: " + Arrays.toString( this.rank ) + "\ntouched: " + Arrays
+				.toString( this.touched ) + "\ncount: " + this.count;
 	}
 
 }
