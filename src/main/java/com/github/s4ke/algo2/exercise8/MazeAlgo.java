@@ -15,36 +15,6 @@ public class MazeAlgo {
 
 	private static final String UPPER = "^";
 
-	private static final Direction N = Direction.N;
-	private static final Direction E = Direction.E;
-	private static final Direction S = Direction.S;
-	private static final Direction W = Direction.W;
-
-	private enum Direction {
-		N,
-		E,
-		S,
-		W
-	}
-
-	private static Set of(Direction... dir) {
-		return new HashSet<>( Arrays.asList( dir ) );
-	}
-
-	private static Set[][] mazeWorks = {
-			{of( W, S ), of( E ), of( W, E, S ), of( W, S )},
-			{of( N, E, S ), of( W, S ), of( N ), of( N, S )},
-			{of( N, E, S ), of( W, N, E, S ), of( W, E, S ), of( W, N, S )},
-			{of( N, E ), of( W, N ), of( N, E ), of( W, N, E )}
-	};
-
-	private static Set[][] mazeBroken = {
-			{of( W, S ), of( E ), of( W, E, S ), of( W, S )},
-			{of( N, E, S ), of( W, S ), of( N ), of( N, S )},
-			{of( N, E, S ), of( W, N, E, S ), of( W, E, S ), of( W, N )},
-			{of( N, E ), of( W, N ), of( N ), of( E )}
-	};
-
 	public static void printMaze(Set[][] maze) {
 		for ( int i = 0; i < maze.length; ++i ) {
 			printUpper( maze[i] );
@@ -119,6 +89,33 @@ public class MazeAlgo {
 		System.out.println();
 	}
 
+	private static final Direction N = Direction.N;
+	private static final Direction E = Direction.E;
+	private static final Direction S = Direction.S;
+	private static final Direction W = Direction.W;
+
+	private enum Direction {
+		N,
+		E,
+		S,
+		W
+	}
+
+	private static Set of(Direction... dir) {
+		return new HashSet<>( Arrays.asList( dir ) );
+	}
+
+	private static Set[][] mazeWorks = {
+			{of( W, S ), of( E ), of( W, E, S ), of( W, S )},
+			{of( N, E, S ), of( W, S ), of( N ), of( N, S )},
+			{of( N, E, S ), of( W, N, E, S ), of( W, E, S ), of( W, N, S )},
+			{of( N, E ), of( W, N ), of( N, E ), of( W, N, E )}
+	};
+
+	public static boolean works(Set<Direction>[][] maze, int start, int end) {
+		return findSolution( maze, start, end ).connected( start, end );
+	}
+
 	public static UF findSolution(Set<Direction>[][] maze, int start, int end) {
 		int totalSize = maze.length * maze[0].length;
 		int rowLength = maze[0].length;
@@ -158,47 +155,6 @@ public class MazeAlgo {
 		return uf;
 	}
 
-	/*public static List<Integer> startToFinish(UF uf, int start, int finish) {
-		List<Integer> ret = new ArrayList<>();
-		if ( !uf.connected( start, finish ) ) {
-			throw new AssertionError();
-		}
-		int cur = finish;
-		ret.add( 0, cur );
-		System.out.println( "starting at: " + cur );
-		while ( cur != start ) {
-			while ( uf.from( cur ) != -1 ) {
-				int tmp = uf.from( cur );
-				if ( tmp != -1 ) {
-					if ( ret.contains( tmp ) ) {
-						break;
-					}
-					ret.add( 0, tmp );
-					if ( ret.contains( tmp ) ) {
-						//throw new AssertionError();
-					}
-					System.out.println( "going backwards to: " + tmp );
-					cur = tmp;
-				}
-			}
-			if ( cur != start ) {
-				ret.remove( 0 );
-			}
-			while ( uf.to( cur ) != -1 ) {
-				int tmp = uf.to( cur );
-				if ( tmp != -1 ) {
-					if ( ret.contains( tmp ) ) {
-						break;
-					}
-					ret.add( 0, tmp );
-					System.out.println( "going backwards to: " + tmp );
-					cur = tmp;
-				}
-			}
-		}
-		return ret;
-	}*/
-
 	public static boolean exists(int other, int totalSize) {
 		return other >= 0 && other <= (totalSize - 1);
 	}
@@ -236,14 +192,7 @@ public class MazeAlgo {
 
 	public static void go(int start, int finish) {
 		printMaze( mazeWorks );
-		UF uf = findSolution( mazeWorks, start, finish );
-		System.out.println( uf.connected( start, finish ) );
-		if ( uf.connected( start, finish ) ) {
-			for ( int i = 0; i < 16; ++i ) {
-				System.out.print( String.valueOf( i ) + ":" + String.valueOf( uf.from( i ) ) + "; " );
-			}
-			System.out.println();
-		}
+		System.out.println(works( mazeWorks, start, finish ));
 	}
 
 }

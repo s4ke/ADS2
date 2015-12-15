@@ -1,5 +1,5 @@
 /**
- * touched http://algs4.cs.princeton.edu/15uf/UF.java.html
+ * from http://algs4.cs.princeton.edu/15uf/UF.java.html
  */
 package com.github.s4ke.algo2.unionfind;
 
