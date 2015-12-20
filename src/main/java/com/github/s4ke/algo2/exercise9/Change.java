@@ -18,7 +18,7 @@ public class Change {
 
 		@Override
 		public int size() {
-			return Integer.MAX_VALUE - 1;
+			return Integer.MAX_VALUE;
 		}
 
 	}
