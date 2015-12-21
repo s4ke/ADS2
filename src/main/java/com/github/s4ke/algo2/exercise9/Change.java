@@ -38,7 +38,7 @@ public class Change {
 
 	}
 
-	private static Double[] MONEY = {0.01, 0.03, 0.04};
+	private static Double[] MONEY = {0.01D, 2D, 4D};
 	private static List<Double> MONEY_LIST = Arrays.asList( MONEY );
 
 	public static List<Double> makeChange(List<Double> coinsIn, double n) {
@@ -52,10 +52,8 @@ public class Change {
 		map.put( 0.0D, Collections.emptyList() );
 		//Hack, needed for Java to work with Doubles
 		//could have fixed this differently, but welp this works
-		double roundFactor = Math.pow( 10, Math.abs( Math.ceil( Math.log10( smallest ) ) ) );
-		if(smallest >= 1) {
-			roundFactor = 1;
-		}
+		//at least for 0.01D as the smallest, we don't really care...
+		double roundFactor = Math.pow( 10, Math.signum( smallest ) * Math.ceil( Math.abs( Math.log10( smallest ) ) ) );
 		for ( double A = smallest; A <= n; A = Math.round( (A + smallest) * roundFactor ) / roundFactor ) {
 			List<Double> min = InfiniteList.INSTANCE;
 			for ( int c = 0; c < coins.size(); ++c ) {
@@ -80,7 +78,7 @@ public class Change {
 	}
 
 	public static void main(String[] args) {
-		System.out.println( makeChange( MONEY_LIST, 0.93 ) );
+		System.out.println( makeChange( MONEY_LIST, 93D ) );
 	}
 
 }
